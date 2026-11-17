@@ -6,7 +6,6 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Kimetsu Ledger</title>
   
-  <!-- Manifest PWA untuk Full Screen -->
   <link rel="manifest" href='data:application/manifest+json,{"name":"Kimetsu Ledger","short_name":"Kimetsu","start_url":".","display":"standalone","background_color":"#f4f7f6","theme_color":"#2e5c45","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/2978/2978924.png","sizes":"512x512","type":"image/png"}]}'>
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -33,17 +32,7 @@
 </head>
 <body class="text-gray-800 antialiased">
 
-  <!-- LAYAR KUNCI (PASSWORD) -->
-  <div id="lockScreen" class="fixed inset-0 bg-tanjiro z-[9999] flex flex-col items-center justify-center p-4">
-    <div class="text-white text-6xl mb-4">🔒</div>
-    <h2 class="text-white font-bold text-xl mb-6">PRIVATE ACCESS</h2>
-    <input type="password" id="passwordInput" placeholder="Masukkan Sandi" class="px-4 py-3 rounded-lg w-full max-w-xs text-center focus:outline-none mb-4" onkeypress="if(event.key==='Enter') checkPassword()">
-    <button onclick="checkPassword()" class="bg-white text-tanjiro font-bold py-3 px-8 rounded-lg shadow-lg">BUKA APLIKASI</button>
-    <p id="errorMsg" class="text-red-200 mt-4 hidden text-sm">Sandi salah. Akses ditolak!</p>
-  </div>
-
-  <!-- KONTEN UTAMA (Tersembunyi Sebelum Login) -->
-  <div id="mainApp" class="hidden">
+  <div id="mainApp">
     <nav class="bg-white border-b-2 border-tanjiro sticky top-0 z-50 shadow-sm">
       <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
         <div class="flex items-center gap-2">
@@ -58,9 +47,8 @@
     </nav>
 
     <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+      <!-- KARTU RINGKASAN -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        
-        <!-- DANA AWAL (DITAMBAHKAN TOMBOL EDIT) -->
         <div class="bg-white p-4 rounded-xl border shadow-sm flex justify-between items-center">
           <div>
             <p class="text-xs text-gray-500 font-bold uppercase mb-1">Dana Awal</p>
@@ -123,36 +111,43 @@
       </div>
       <form id="formTambah" class="p-4 space-y-4" onsubmit="tambahData(event)">
         <div>
-          <label class="block text-xs font-bold text-gray-600 mb-1">Nama</label>
-          <input type="text" id="inputNama" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-tanjiro" placeholder="Cth: Belanja">
+          <label class="block text-xs font-bold text-gray-600 mb-1">Nama Pengeluaran</label>
+          <input type="text" id="inputNama" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-tanjiro" placeholder="Cth: Belanja Pasar">
         </div>
         <div>
           <label class="block text-xs font-bold text-gray-600 mb-1">Nominal (Rp)</label>
           <input type="number" id="inputNominal" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-tanjiro" placeholder="Cth: 50000">
         </div>
-        <button type="submit" class="w-full bg-hinokami text-white font-bold py-2 rounded-lg">Simpan</button>
+        <button type="submit" class="w-full bg-hinokami text-white font-bold py-2 rounded-lg">Simpan Data</button>
       </form>
     </div>
   </div>
 
+  <!-- MODAL EDIT DATA (FITUR BARU) -->
+  <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-sm overflow-hidden">
+      <div class="bg-tanjiro p-4 flex justify-between items-center text-white">
+        <h3 class="font-bold">Edit Data</h3>
+        <button onclick="closeEditModal()" class="text-2xl">&times;</button>
+      </div>
+      <div class="p-4 space-y-4">
+        <!-- Hidden input untuk menyimpan index data yang sedang diedit -->
+        <input type="hidden" id="editIndex">
+        
+        <div>
+          <label class="block text-xs font-bold text-gray-600 mb-1">Nama Pengeluaran</label>
+          <input type="text" id="editNama" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-tanjiro">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-600 mb-1">Nominal (Rp)</label>
+          <input type="number" id="editNominal" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-tanjiro">
+        </div>
+        <button onclick="simpanEditData()" class="w-full bg-tanjiro text-white font-bold py-2 rounded-lg">Simpan Perubahan</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // ==========================================
-    // SANDI RAHASIA (Ubah di sini jika perlu)
-    // ==========================================
-    const PASSWORD_RAHASIA = "sonybae32"; 
-
-    function checkPassword() {
-      const input = document.getElementById('passwordInput').value;
-      if (input === PASSWORD_RAHASIA) {
-        document.getElementById('lockScreen').classList.add('hidden');
-        document.getElementById('mainApp').classList.remove('hidden');
-      } else {
-        document.getElementById('errorMsg').classList.remove('hidden');
-        document.getElementById('passwordInput').value = '';
-      }
-    }
-
-    // --- DATA & LOGIC KEUANGAN ---
     const dataAwal = [
       { nama: "Belanja masak mamak", nominal: 100000 }, { nama: "Sedekah", nominal: 500000 },
       { nama: "Pegangan mamak", nominal: 500000 }, { nama: "Bensin", nominal: 25000 },
@@ -176,10 +171,7 @@
       { nama: "Brobat nisa", nominal: 100000 }
     ];
 
-    // Ambil data dari memori, jika kosong pakai data awal
     let dataPengeluaran = JSON.parse(localStorage.getItem('kimetsu_data')) || dataAwal;
-    
-    // Ambil Dana Awal dari memori, jika kosong pakai 13.000.000
     let danaAwal = parseInt(localStorage.getItem('kimetsu_dana_awal')) || 13000000;
 
     const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
@@ -192,9 +184,7 @@
       const filteredData = dataPengeluaran.filter(item => item.nama.toLowerCase().includes(search));
 
       filteredData.forEach((item, index) => {
-        // Dapatkan index asli dari array untuk fungsi edit/hapus
         const originalIndex = dataPengeluaran.indexOf(item);
-        
         const tr = document.createElement('tr');
         tr.className = "hover:bg-gray-50";
         tr.innerHTML = `
@@ -202,15 +192,13 @@
           <td class="py-3 px-4 font-medium">${item.nama}</td>
           <td class="py-3 px-4 text-right font-bold">${formatRp(item.nominal)}</td>
           <td class="py-3 px-4 text-center whitespace-nowrap">
-            <!-- TOMBOL EDIT DITAMBAHKAN DI SINI -->
-            <button onclick="editData(${originalIndex})" class="text-tanjiro font-bold text-xs bg-green-50 py-1 px-2 rounded mr-1 hover:bg-green-100 transition-colors">Edit</button>
+            <button onclick="bukaEditModal(${originalIndex})" class="text-tanjiro font-bold text-xs bg-green-50 py-1 px-2 rounded mr-1 hover:bg-green-100 transition-colors">Edit</button>
             <button onclick="hapusData(${originalIndex})" class="text-red-500 font-bold text-xs bg-red-50 py-1 px-2 rounded hover:bg-red-100 transition-colors">Hapus</button>
           </td>
         `;
         tbody.appendChild(tr);
       });
 
-      // Hitung Total & Saldo
       const totalKeluar = dataPengeluaran.reduce((sum, i) => sum + i.nominal, 0);
       document.getElementById('danaAwalText').innerText = formatRp(danaAwal);
       document.getElementById('totalKeluar').innerText = formatRp(totalKeluar);
@@ -219,9 +207,7 @@
 
     // --- FUNGSI EDIT DANA AWAL ---
     function editDanaAwal() {
-      // Menggunakan prompt untuk input angka baru (hapus titik/koma agar mudah diedit)
       const input = prompt("Masukkan Total Dana Awal (Hanya Angka, tanpa titik):", danaAwal);
-      
       if (input !== null) {
         const angkaBaru = parseInt(input);
         if (!isNaN(angkaBaru) && angkaBaru >= 0) {
@@ -234,25 +220,34 @@
       }
     }
 
-    // --- FUNGSI EDIT TRANSAKSI ---
-    function editData(index) {
+    // --- FUNGSI EDIT TRANSAKSI (MENGGUNAKAN MODAL) ---
+    function bukaEditModal(index) {
       const item = dataPengeluaran[index];
+      document.getElementById('editIndex').value = index;
+      document.getElementById('editNama').value = item.nama;
+      document.getElementById('editNominal').value = item.nominal;
       
-      // 1. Edit Nama
-      const namaBaru = prompt("Edit Nama Pengeluaran:", item.nama);
-      if (namaBaru === null) return; // Batal jika user klik Cancel
+      document.getElementById('editModal').classList.remove('hidden');
+      document.getElementById('editModal').classList.add('flex');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').classList.add('hidden');
+      document.getElementById('editModal').classList.remove('flex');
+    }
+
+    function simpanEditData() {
+      const index = document.getElementById('editIndex').value;
+      const namaBaru = document.getElementById('editNama').value.trim();
+      const nominalBaru = parseInt(document.getElementById('editNominal').value);
       
-      // 2. Edit Nominal
-      const nominalBaru = prompt("Edit Nominal (Hanya Angka, tanpa titik):", item.nominal);
-      if (nominalBaru === null) return;
-      
-      const nominalAngka = parseInt(nominalBaru);
-      if (namaBaru.trim() !== "" && !isNaN(nominalAngka) && nominalAngka > 0) {
-        dataPengeluaran[index] = { nama: namaBaru.trim(), nominal: nominalAngka };
+      if (namaBaru && !isNaN(nominalBaru) && nominalBaru > 0) {
+        dataPengeluaran[index] = { nama: namaBaru, nominal: nominalBaru };
         localStorage.setItem('kimetsu_data', JSON.stringify(dataPengeluaran));
+        closeEditModal();
         renderTable();
       } else {
-        alert("Data tidak valid. Pastikan nama terisi dan nominal berupa angka.");
+        alert("Pastikan nama terisi dan nominal berupa angka yang valid.");
       }
     }
 
@@ -277,11 +272,10 @@
       }
     }
 
-    // --- KONTROL MODAL ---
+    // --- KONTROL MODAL TAMBAH ---
     function openModal() { document.getElementById('modal').classList.remove('hidden'); document.getElementById('modal').classList.add('flex'); }
     function closeModal() { document.getElementById('modal').classList.add('hidden'); document.getElementById('modal').classList.remove('flex'); }
     
-    // Jalankan saat halaman dimuat
     window.onload = renderTable;
   </script>
 </body>
