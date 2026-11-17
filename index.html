@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow">
-  <title>Leonida Vault - Financial Dashboard</title>
+  <title>Leonida Vault - GTA VI Edition</title>
   
   <!-- Manifest PWA -->
-  <link rel="manifest" href='data:application/manifest+json,{"name":"Leonida Vault","short_name":"Vault","start_url":".","display":"standalone","background_color":"#0f0c29","theme_color":"#ff007f","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/2978/2978924.png","sizes":"512x512","type":"image/png"}]}'>
+  <link rel="manifest" href='data:application/manifest+json,{"name":"Leonida Vault","short_name":"Vault","start_url":".","display":"standalone","background_color":"#0b0914","theme_color":"#ff007f","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/2978/2978924.png","sizes":"512x512","type":"image/png"}]}'>
   
-  <!-- Font GTA Style (Outfit & Space Grotesk) -->
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <!-- Font GTA Style -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <!-- Ikon FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
@@ -21,128 +21,161 @@
       theme: {
         extend: {
           colors: { 
-            'gta-dark': '#0f0c29', 
-            'gta-pink': '#ff007f', 
-            'gta-cyan': '#00f0ff',
-            'gta-orange': '#ff8c00',
-            'gta-slate': '#1e1b4b'
+            'vice-dark': '#0b0914', 
+            'neon-pink': '#ff007f', 
+            'neon-cyan': '#00f0ff',
+            'neon-orange': '#ff5e00',
+            'neon-yellow': '#fcee0a'
           },
           fontFamily: { 
             sans: ['Outfit', 'sans-serif'],
-            mono: ['Space Grotesk', 'sans-serif']
-          },
-          boxShadow: {
-            'neon-pink': '0 0 15px rgba(255, 0, 127, 0.5)',
-            'neon-cyan': '0 0 15px rgba(0, 240, 255, 0.5)',
+            mono: ['Space Mono', 'monospace']
           }
         }
       }
     }
   </script>
   <style>
-    /* Background Sunset Vice City */
+    /* --- VICE CITY BACKGROUND --- */
     body {
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      background-color: #0b0914;
+      background-image: 
+        /* Grid neon */
+        linear-gradient(rgba(0, 240, 255, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.15) 1px, transparent 1px),
+        /* Gradasi sunset di atas */
+        radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.4) 0%, transparent 60%),
+        radial-gradient(circle at 50% 100%, rgba(255, 94, 0, 0.2) 0%, transparent 50%);
+      background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%;
+      background-position: center top;
       background-attachment: fixed;
       min-height: 100vh;
       color: white;
+      overflow-x: hidden;
     }
-    
+
     /* Efek Kaca Gelap */
-    .glass-card {
-      background: rgba(30, 27, 75, 0.6);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+    .vice-glass {
+      background: rgba(11, 9, 20, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    /* Sembunyikan Spinner Input Number */
+    /* Teks Neon */
+    .text-glow-pink { text-shadow: 0 0 10px rgba(255, 0, 127, 0.8), 0 0 20px rgba(255, 0, 127, 0.5); }
+    .text-glow-cyan { text-shadow: 0 0 10px rgba(0, 240, 255, 0.8), 0 0 20px rgba(0, 240, 255, 0.5); }
+    .text-glow-orange { text-shadow: 0 0 10px rgba(255, 94, 0, 0.8), 0 0 20px rgba(255, 94, 0, 0.5); }
+    .text-glow-yellow { text-shadow: 0 0 10px rgba(252, 238, 10, 0.8), 0 0 20px rgba(252, 238, 10, 0.5); }
+
+    /* Garis Tepi Nyala */
+    .border-glow-pink { box-shadow: 0 0 15px rgba(255, 0, 127, 0.3), inset 0 0 15px rgba(255, 0, 127, 0.1); border-color: rgba(255, 0, 127, 0.5); }
+    .border-glow-cyan { box-shadow: 0 0 15px rgba(0, 240, 255, 0.3), inset 0 0 15px rgba(0, 240, 255, 0.1); border-color: rgba(0, 240, 255, 0.5); }
+    .border-glow-orange { box-shadow: 0 0 15px rgba(255, 94, 0, 0.3), inset 0 0 15px rgba(255, 94, 0, 0.1); border-color: rgba(255, 94, 0, 0.5); }
+
+    /* Gaya Logo GTA VI */
+    .gta-logo {
+      font-weight: 900;
+      font-style: italic;
+      letter-spacing: 2px;
+      background: linear-gradient(to bottom, #fff, #ff007f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0px 4px 2px rgba(0, 240, 255, 0.5));
+    }
+
+    /* Sembunyikan Spinner */
     input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    
+    /* Scrollbar Custom */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0b0914; }
+    ::-webkit-scrollbar-thumb { background: #ff007f; border-radius: 10px; }
   </style>
 </head>
-<body class="antialiased pb-10">
+<body class="antialiased pb-12">
 
   <div id="mainApp">
     <!-- NAVBAR -->
-    <nav class="glass-card sticky top-0 z-50 border-b border-gta-pink/30 shadow-neon-pink">
+    <nav class="vice-glass sticky top-0 z-50 border-b border-neon-pink/50 shadow-[0_4px_30px_rgba(255,0,127,0.2)]">
       <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gta-pink to-gta-orange flex items-center justify-center text-white font-black text-xl shadow-neon-pink">
+          <div class="w-11 h-11 rounded-md bg-gradient-to-br from-neon-pink to-neon-orange flex items-center justify-center text-white text-xl shadow-[0_0_15px_#ff007f]">
             <i class="fa-solid fa-vault"></i>
           </div>
           <div>
-            <h1 class="font-bold text-xl text-white tracking-wide uppercase">LEONIDA VAULT</h1>
-            <p class="text-[10px] text-gta-cyan font-mono tracking-widest">PERSONAL FINANCE</p>
+            <h1 class="gta-logo text-2xl uppercase">LEONIDA VAULT</h1>
+            <p class="text-[10px] text-neon-cyan font-mono tracking-widest uppercase mt-0.5">Vice City Finance</p>
           </div>
         </div>
-        <button onclick="openModal()" class="bg-gta-pink hover:bg-pink-600 text-white text-sm font-bold py-2.5 px-5 rounded-lg shadow-neon-pink transition-all transform hover:scale-105">
-          <i class="fa-solid fa-plus mr-1"></i> TAMBAH
+        <button onclick="openModal()" class="bg-neon-pink hover:bg-pink-600 text-white font-black py-2.5 px-5 rounded shadow-[0_0_20px_rgba(255,0,127,0.6)] transition-all transform hover:scale-105 active:scale-95 uppercase tracking-wider text-sm border border-pink-300">
+          <i class="fa-solid fa-plus mr-1"></i> BARU
         </button>
       </div>
     </nav>
 
-    <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+    <main class="max-w-4xl mx-auto px-4 py-8 space-y-6 relative z-10">
       
       <!-- KARTU RINGKASAN (BIG NUMBERS) -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
         
-        <!-- DANA AWAL -->
-        <div class="glass-card p-5 rounded-2xl border-l-4 border-l-gta-cyan relative overflow-hidden">
-          <div class="absolute -right-4 -top-4 text-6xl text-white/5"><i class="fa-solid fa-wallet"></i></div>
-          <p class="text-xs text-gta-cyan font-bold uppercase tracking-wider mb-1">Dana Awal</p>
-          <p id="danaAwalText" class="text-3xl font-black text-white font-mono">Rp 0</p>
-          <button onclick="editDanaAwal()" class="mt-3 text-[11px] text-gta-cyan bg-gta-cyan/10 border border-gta-cyan/30 px-3 py-1 rounded-md font-bold hover:bg-gta-cyan hover:text-black transition-colors">
-            <i class="fa-solid fa-pen-to-square"></i> Edit Modal
+        <!-- DANA AWAL (CYAN) -->
+        <div class="vice-glass p-6 rounded-xl border-l-4 border-glow-cyan relative overflow-hidden">
+          <div class="absolute -right-4 -top-4 text-7xl text-cyan-500/10"><i class="fa-solid fa-wallet"></i></div>
+          <p class="text-xs text-neon-cyan font-bold uppercase tracking-widest mb-2 font-mono">Dana Awal</p>
+          <p id="danaAwalText" class="text-4xl font-black text-white font-mono text-glow-cyan">Rp 0</p>
+          <button onclick="editDanaAwal()" class="mt-4 text-[11px] text-neon-cyan bg-neon-cyan/10 border border-neon-cyan/50 px-3 py-1.5 rounded uppercase font-bold tracking-wider hover:bg-neon-cyan hover:text-black transition-colors">
+            <i class="fa-solid fa-pen-to-square mr-1"></i> Edit Modal
           </button>
         </div>
 
-        <!-- PENGELUARAN -->
-        <div class="glass-card p-5 rounded-2xl border-l-4 border-l-gta-pink relative overflow-hidden">
-          <div class="absolute -right-4 -top-4 text-6xl text-white/5"><i class="fa-solid fa-money-bill-transfer"></i></div>
-          <p class="text-xs text-gta-pink font-bold uppercase tracking-wider mb-1">Total Pengeluaran</p>
-          <p id="totalKeluar" class="text-3xl font-black text-gta-pink font-mono">Rp 0</p>
+        <!-- PENGELUARAN (PINK) -->
+        <div class="vice-glass p-6 rounded-xl border-l-4 border-glow-pink relative overflow-hidden">
+          <div class="absolute -right-4 -top-4 text-7xl text-pink-500/10"><i class="fa-solid fa-money-bill-transfer"></i></div>
+          <p class="text-xs text-neon-pink font-bold uppercase tracking-widest mb-2 font-mono">Total Keluar</p>
+          <p id="totalKeluar" class="text-4xl font-black text-neon-pink font-mono text-glow-pink">Rp 0</p>
         </div>
 
-        <!-- SISA SALDO -->
-        <div class="glass-card p-5 rounded-2xl border-l-4 border-l-gta-orange relative overflow-hidden bg-gradient-to-r from-gta-dark to-gta-slate">
-          <div class="absolute -right-4 -top-4 text-6xl text-white/5"><i class="fa-solid fa-chart-line"></i></div>
-          <p class="text-xs text-gta-orange font-bold uppercase tracking-wider mb-1">Sisa Saldo</p>
-          <p id="sisaSaldo" class="text-3xl font-black text-white font-mono drop-shadow-[0_0_10px_rgba(255,140,0,0.5)]">Rp 0</p>
+        <!-- SISA SALDO (ORANGE) -->
+        <div class="vice-glass p-6 rounded-xl border-l-4 border-glow-orange relative overflow-hidden bg-gradient-to-br from-vice-dark to-orange-900/20">
+          <div class="absolute -right-4 -top-4 text-7xl text-orange-500/10"><i class="fa-solid fa-chart-line"></i></div>
+          <p class="text-xs text-neon-orange font-bold uppercase tracking-widest mb-2 font-mono">Sisa Saldo</p>
+          <p id="sisaSaldo" class="text-4xl font-black text-white font-mono text-glow-orange">Rp 0</p>
         </div>
       </div>
 
-      <!-- TEMUAN AUDIT (Gaya Mission Alert GTA) -->
-      <div class="glass-card border border-yellow-500/50 p-5 rounded-2xl relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-1 h-full bg-yellow-500"></div>
+      <!-- TEMUAN AUDIT (Gaya Police Tape / Hacker Terminal) -->
+      <div class="vice-glass border border-neon-yellow/60 p-5 rounded-xl relative overflow-hidden shadow-[0_0_20px_rgba(252,238,10,0.15)] bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(252,238,10,0.05)_10px,rgba(252,238,10,0.05)_20px)]">
+        <div class="absolute top-0 left-0 w-1.5 h-full bg-neon-yellow"></div>
         <div class="flex items-start gap-4">
-          <div class="text-3xl text-yellow-500 animate-pulse"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <div class="text-3xl text-neon-yellow animate-pulse drop-shadow-[0_0_10px_rgba(252,238,10,0.8)]"><i class="fa-solid fa-triangle-exclamation"></i></div>
           <div>
-            <h3 class="font-bold text-yellow-500 uppercase tracking-widest text-sm">MISSION INTEL: UANG RP 60.000 MASIH UTUH</h3>
+            <h3 class="font-black text-neon-yellow uppercase tracking-widest text-sm font-mono">[!] INTEL: UANG RP 60.000 MASIH UTUH</h3>
             <p class="text-sm text-gray-300 mt-1 font-mono leading-relaxed">
-              Baris ke-27 → 28 melompat ke 4735. Seharusnya 4615 + 60 = 4675. Sisa saldo riil: <strong class="text-white">Rp 7.600.000</strong>.
+              Baris ke-27 &rarr; 28 melompat ke 4735. Seharusnya 4615 + 60 = 4675.<br> Sisa saldo riil: <strong class="text-white text-glow-yellow">Rp 7.600.000</strong>.
             </p>
           </div>
         </div>
       </div>
 
       <!-- TABEL RIWAYAT -->
-      <div class="glass-card rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-        <div class="p-5 border-b border-white/10 bg-black/20 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <h2 class="font-black text-xl tracking-wider text-white uppercase"><i class="fa-solid fa-list-ul text-gta-cyan mr-2"></i> LOG TRANSAKSI</h2>
-          <div class="relative w-full sm:w-64">
-            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"></i>
-            <input type="text" id="searchInput" oninput="renderTable()" placeholder="Cari data..." class="w-full pl-9 pr-4 py-2.5 bg-black/40 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-gta-cyan transition-colors">
+      <div class="vice-glass rounded-xl overflow-hidden shadow-2xl border border-white/10">
+        <div class="p-5 border-b border-white/10 bg-black/40 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <h2 class="font-black text-xl tracking-wider text-white uppercase font-mono"><i class="fa-solid fa-terminal text-neon-cyan mr-2"></i> SYSTEM LOG</h2>
+          <div class="relative w-full sm:w-72">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400"></i>
+            <input type="text" id="searchInput" oninput="renderTable()" placeholder="Cari transaksi..." class="w-full pl-10 pr-4 py-3 bg-black/60 border border-white/20 rounded-md text-sm text-white font-mono focus:outline-none focus:border-neon-cyan focus:shadow-[0_0_10px_rgba(0,240,255,0.3)] transition-all">
           </div>
         </div>
         
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm">
-            <thead class="bg-black/40 text-gray-400 border-b border-white/10">
+          <table class="w-full text-left text-sm font-mono">
+            <thead class="bg-black/60 text-gray-400 border-b border-white/10">
               <tr>
-                <th class="py-4 px-5 font-bold uppercase tracking-wider">No</th>
-                <th class="py-4 px-5 font-bold uppercase tracking-wider">Pengeluaran</th>
+                <th class="py-4 px-5 font-bold uppercase tracking-wider">ID</th>
+                <th class="py-4 px-5 font-bold uppercase tracking-wider">Keterangan</th>
                 <th class="py-4 px-5 font-bold uppercase tracking-wider text-right">Nominal</th>
-                <th class="py-4 px-5 font-bold uppercase tracking-wider text-center">Aksi</th>
+                <th class="py-4 px-5 font-bold uppercase tracking-wider text-center">Opsi</th>
               </tr>
             </thead>
             <tbody id="tabelBody" class="divide-y divide-white/5"></tbody>
@@ -153,44 +186,44 @@
   </div>
 
   <!-- MODAL TAMBAH DATA -->
-  <div id="modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="glass-card rounded-2xl shadow-neon-pink w-full max-w-sm overflow-hidden border border-gta-pink/30">
-      <div class="bg-gradient-to-r from-gta-pink to-gta-orange p-4 flex justify-between items-center text-white">
-        <h3 class="font-bold tracking-wide uppercase"><i class="fa-solid fa-plus-circle mr-2"></i> Catat Transaksi</h3>
-        <button onclick="closeModal()" class="text-2xl hover:text-black">&times;</button>
+  <div id="modal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+    <div class="vice-glass rounded-xl shadow-[0_0_30px_rgba(255,0,127,0.3)] w-full max-w-sm overflow-hidden border border-neon-pink">
+      <div class="bg-gradient-to-r from-neon-pink to-neon-orange p-4 flex justify-between items-center text-white">
+        <h3 class="font-black tracking-widest uppercase font-mono"><i class="fa-solid fa-plus-circle mr-2"></i> NEW ENTRY</h3>
+        <button onclick="closeModal()" class="text-2xl hover:text-black transition-colors">&times;</button>
       </div>
-      <form id="formTambah" class="p-5 space-y-4" onsubmit="tambahData(event)">
+      <form id="formTambah" class="p-6 space-y-5" onsubmit="tambahData(event)">
         <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1 uppercase tracking-wider">Nama Pengeluaran</label>
-          <input type="text" id="inputNama" required class="w-full px-4 py-3 bg-black/40 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gta-pink" placeholder="Cth: Belanja Pasar">
+          <label class="block text-[11px] font-bold text-neon-cyan mb-2 uppercase tracking-widest font-mono">Keterangan</label>
+          <input type="text" id="inputNama" required class="w-full px-4 py-3 bg-black/50 border border-white/20 rounded text-white font-mono focus:outline-none focus:border-neon-cyan focus:shadow-[0_0_10px_rgba(0,240,255,0.2)]" placeholder="Cth: Beli Amunisi">
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1 uppercase tracking-wider">Nominal (Rp)</label>
-          <input type="number" id="inputNominal" required class="w-full px-4 py-3 bg-black/40 border border-white/10 rounded-lg text-white font-mono focus:outline-none focus:border-gta-pink" placeholder="Cth: 50000">
+          <label class="block text-[11px] font-bold text-neon-cyan mb-2 uppercase tracking-widest font-mono">Nominal ($ / Rp)</label>
+          <input type="number" id="inputNominal" required class="w-full px-4 py-3 bg-black/50 border border-white/20 rounded text-white font-mono focus:outline-none focus:border-neon-cyan focus:shadow-[0_0_10px_rgba(0,240,255,0.2)]" placeholder="Cth: 50000">
         </div>
-        <button type="submit" class="w-full bg-gta-cyan text-black font-black py-3 rounded-lg hover:bg-cyan-300 transition-colors uppercase tracking-wide shadow-neon-cyan">SIMPAN DATA</button>
+        <button type="submit" class="w-full bg-neon-cyan text-black font-black py-3.5 rounded hover:bg-cyan-300 transition-colors uppercase tracking-widest font-mono shadow-[0_0_15px_rgba(0,240,255,0.4)]">EXECUTE</button>
       </form>
     </div>
   </div>
 
   <!-- MODAL EDIT DATA -->
-  <div id="editModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="glass-card rounded-2xl shadow-neon-cyan w-full max-w-sm overflow-hidden border border-gta-cyan/30">
-      <div class="bg-gradient-to-r from-gta-cyan to-blue-500 p-4 flex justify-between items-center text-black">
-        <h3 class="font-bold tracking-wide uppercase"><i class="fa-solid fa-pen-to-square mr-2"></i> Edit Transaksi</h3>
-        <button onclick="closeEditModal()" class="text-2xl hover:text-white">&times;</button>
+  <div id="editModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+    <div class="vice-glass rounded-xl shadow-[0_0_30px_rgba(0,240,255,0.3)] w-full max-w-sm overflow-hidden border border-neon-cyan">
+      <div class="bg-gradient-to-r from-neon-cyan to-blue-600 p-4 flex justify-between items-center text-black">
+        <h3 class="font-black tracking-widest uppercase font-mono"><i class="fa-solid fa-pen-to-square mr-2"></i> EDIT DATA</h3>
+        <button onclick="closeEditModal()" class="text-2xl hover:text-white transition-colors">&times;</button>
       </div>
-      <div class="p-5 space-y-4">
+      <div class="p-6 space-y-5">
         <input type="hidden" id="editIndex">
         <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1 uppercase tracking-wider">Nama Pengeluaran</label>
-          <input type="text" id="editNama" class="w-full px-4 py-3 bg-black/40 border border-white/10 rounded-lg text-white focus:outline-none focus:border-gta-cyan">
+          <label class="block text-[11px] font-bold text-neon-cyan mb-2 uppercase tracking-widest font-mono">Keterangan</label>
+          <input type="text" id="editNama" class="w-full px-4 py-3 bg-black/50 border border-white/20 rounded text-white font-mono focus:outline-none focus:border-neon-cyan">
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1 uppercase tracking-wider">Nominal (Rp)</label>
-          <input type="number" id="editNominal" class="w-full px-4 py-3 bg-black/40 border border-white/10 rounded-lg text-white font-mono focus:outline-none focus:border-gta-cyan">
+          <label class="block text-[11px] font-bold text-neon-cyan mb-2 uppercase tracking-widest font-mono">Nominal ($ / Rp)</label>
+          <input type="number" id="editNominal" class="w-full px-4 py-3 bg-black/50 border border-white/20 rounded text-white font-mono focus:outline-none focus:border-neon-cyan">
         </div>
-        <button onclick="simpanEditData()" class="w-full bg-gta-cyan text-black font-black py-3 rounded-lg hover:bg-cyan-300 transition-colors uppercase tracking-wide shadow-neon-cyan">SIMPAN PERUBAHAN</button>
+        <button onclick="simpanEditData()" class="w-full bg-neon-cyan text-black font-black py-3.5 rounded hover:bg-cyan-300 transition-colors uppercase tracking-widest font-mono shadow-[0_0_15px_rgba(0,240,255,0.4)]">UPDATE SYSTEM</button>
       </div>
     </div>
   </div>
@@ -234,14 +267,14 @@
       filteredData.forEach((item, index) => {
         const originalIndex = dataPengeluaran.indexOf(item);
         const tr = document.createElement('tr');
-        tr.className = "hover:bg-white/5 transition-colors";
+        tr.className = "hover:bg-white/5 transition-colors border-b border-white/5";
         tr.innerHTML = `
-          <td class="py-4 px-5 text-gray-400 font-mono">${index + 1}</td>
-          <td class="py-4 px-5 font-bold text-white">${item.nama}</td>
-          <td class="py-4 px-5 text-right font-mono font-bold text-gta-cyan">${formatRp(item.nominal)}</td>
+          <td class="py-4 px-5 text-neon-cyan font-bold">#${String(index + 1).padStart(2, '0')}</td>
+          <td class="py-4 px-5 font-bold text-white text-base">${item.nama}</td>
+          <td class="py-4 px-5 text-right font-black text-neon-pink text-base text-glow-pink">${formatRp(item.nominal)}</td>
           <td class="py-4 px-5 text-center whitespace-nowrap">
-            <button onclick="bukaEditModal(${originalIndex})" class="text-gta-cyan bg-gta-cyan/10 border border-gta-cyan/30 py-1.5 px-3 rounded-md mr-1 hover:bg-gta-cyan hover:text-black transition-colors"><i class="fa-solid fa-pen"></i></button>
-            <button onclick="hapusData(${originalIndex})" class="text-gta-pink bg-gta-pink/10 border border-gta-pink/30 py-1.5 px-3 rounded-md hover:bg-gta-pink hover:text-white transition-colors"><i class="fa-solid fa-trash"></i></button>
+            <button onclick="bukaEditModal(${originalIndex})" class="text-neon-cyan bg-neon-cyan/10 border border-neon-cyan/50 py-2 px-3 rounded mr-1 hover:bg-neon-cyan hover:text-black hover:shadow-[0_0_10px_rgba(0,240,255,0.5)] transition-all"><i class="fa-solid fa-pen"></i></button>
+            <button onclick="hapusData(${originalIndex})" class="text-neon-pink bg-neon-pink/10 border border-neon-pink/50 py-2 px-3 rounded hover:bg-neon-pink hover:text-white hover:shadow-[0_0_10px_rgba(255,0,127,0.5)] transition-all"><i class="fa-solid fa-trash"></i></button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -309,7 +342,7 @@
     }
 
     function hapusData(index) {
-      if(confirm('Yakin ingin menghapus data ini?')) {
+      if(confirm('Hapus data ini dari sistem?')) {
         dataPengeluaran.splice(index, 1);
         localStorage.setItem('kimetsu_data', JSON.stringify(dataPengeluaran));
         renderTable();
