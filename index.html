@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow">
-  <title>Leonida Vault - GTA VI Edition</title>
+  <title>SONYBAE - Vice City Finance</title>
   
   <!-- Manifest PWA -->
-  <link rel="manifest" href='data:application/manifest+json,{"name":"Leonida Vault","short_name":"Vault","start_url":".","display":"standalone","background_color":"#0b0914","theme_color":"#ff007f","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/2978/2978924.png","sizes":"512x512","type":"image/png"}]}'>
+  <link rel="manifest" href='data:application/manifest+json,{"name":"SONYBAE","short_name":"SONYBAE","start_url":".","display":"standalone","background_color":"#0b0914","theme_color":"#ff007f","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/2978/2978924.png","sizes":"512x512","type":"image/png"}]}'>
   
   <!-- Font GTA Style -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -40,10 +40,8 @@
     body {
       background-color: #0b0914;
       background-image: 
-        /* Grid neon */
         linear-gradient(rgba(0, 240, 255, 0.15) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 240, 255, 0.15) 1px, transparent 1px),
-        /* Gradasi sunset di atas */
         radial-gradient(circle at 50% 0%, rgba(255, 0, 127, 0.4) 0%, transparent 60%),
         radial-gradient(circle at 50% 100%, rgba(255, 94, 0, 0.2) 0%, transparent 50%);
       background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%;
@@ -66,7 +64,6 @@
     .text-glow-pink { text-shadow: 0 0 10px rgba(255, 0, 127, 0.8), 0 0 20px rgba(255, 0, 127, 0.5); }
     .text-glow-cyan { text-shadow: 0 0 10px rgba(0, 240, 255, 0.8), 0 0 20px rgba(0, 240, 255, 0.5); }
     .text-glow-orange { text-shadow: 0 0 10px rgba(255, 94, 0, 0.8), 0 0 20px rgba(255, 94, 0, 0.5); }
-    .text-glow-yellow { text-shadow: 0 0 10px rgba(252, 238, 10, 0.8), 0 0 20px rgba(252, 238, 10, 0.5); }
 
     /* Garis Tepi Nyala */
     .border-glow-pink { box-shadow: 0 0 15px rgba(255, 0, 127, 0.3), inset 0 0 15px rgba(255, 0, 127, 0.1); border-color: rgba(255, 0, 127, 0.5); }
@@ -99,16 +96,19 @@
     <!-- NAVBAR -->
     <nav class="vice-glass sticky top-0 z-50 border-b border-neon-pink/50 shadow-[0_4px_30px_rgba(255,0,127,0.2)]">
       <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-md bg-gradient-to-br from-neon-pink to-neon-orange flex items-center justify-center text-white text-xl shadow-[0_0_15px_#ff007f]">
+        
+        <!-- BAGIAN LOGO YANG DIPERBESAR -->
+        <div class="flex items-center gap-3 sm:gap-4">
+          <div class="w-[60px] h-[60px] sm:w-[80px] sm:h-[80px] rounded-xl bg-gradient-to-br from-neon-pink to-neon-orange flex items-center justify-center text-white text-3xl sm:text-4xl shadow-[0_0_20px_#ff007f]">
             <i class="fa-solid fa-vault"></i>
           </div>
           <div>
-            <h1 class="gta-logo text-2xl uppercase">LEONIDA VAULT</h1>
-            <p class="text-[10px] text-neon-cyan font-mono tracking-widest uppercase mt-0.5">Vice City Finance</p>
+            <h1 class="gta-logo text-4xl sm:text-5xl uppercase tracking-wider">SONYBAE</h1>
+            <p class="text-[10px] sm:text-xs text-neon-cyan font-mono tracking-widest uppercase mt-0.5 sm:mt-1">Vice City Finance</p>
           </div>
         </div>
-        <button onclick="openModal()" class="bg-neon-pink hover:bg-pink-600 text-white font-black py-2.5 px-5 rounded shadow-[0_0_20px_rgba(255,0,127,0.6)] transition-all transform hover:scale-105 active:scale-95 uppercase tracking-wider text-sm border border-pink-300">
+
+        <button onclick="openModal()" class="bg-neon-pink hover:bg-pink-600 text-white font-black py-2.5 px-4 sm:px-5 rounded shadow-[0_0_20px_rgba(255,0,127,0.6)] transition-all transform hover:scale-105 active:scale-95 uppercase tracking-wider text-xs sm:text-sm border border-pink-300">
           <i class="fa-solid fa-plus mr-1"></i> BARU
         </button>
       </div>
