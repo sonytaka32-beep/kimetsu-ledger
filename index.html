@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kimetsu Ledger</title>
+  
+  <!-- Manifest PWA untuk Full Screen -->
+  <link rel="manifest" href='data:application/manifest+json,{"name":"Kimetsu Ledger","short_name":"Kimetsu","start_url":".","display":"standalone","background_color":"#f4f7f6","theme_color":"#2e5c45","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/2978/2978924.png","sizes":"512x512","type":"image/png"}]}'>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { tanjiro: '#2e5c45', hinokami: '#b81d1d' },
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #f4f7f6;
+      background-image: linear-gradient(45deg, rgba(46, 92, 69, 0.05) 25%, transparent 25%, transparent 75%, rgba(46, 92, 69, 0.05) 75%, rgba(46, 92, 69, 0.05)), linear-gradient(45deg, rgba(46, 92, 69, 0.05) 25%, transparent 25%, transparent 75%, rgba(46, 92, 69, 0.05) 75%, rgba(46, 92, 69, 0.05));
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
+    }
+    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+  <!-- LAYAR KUNCI (PASSWORD) -->
+  <div id="lockScreen" class="fixed inset-0 bg-tanjiro z-[9999] flex flex-col items-center justify-center p-4">
+    <div class="text-white text-6xl mb-4">🔒</div>
+    <h2 class="text-white font-bold text-xl mb-6">PRIVATE ACCESS</h2>
+    <input type="password" id="passwordInput" placeholder="Masukkan Sandi" class="px-4 py-3 rounded-lg w-full max-w-xs text-center focus:outline-none mb-4" onkeypress="if(event.key==='Enter') checkPassword()">
+    <button onclick="checkPassword()" class="bg-white text-tanjiro font-bold py-3 px-8 rounded-lg shadow-lg">BUKA APLIKASI</button>
+    <p id="errorMsg" class="text-red-200 mt-4 hidden text-sm">Sandi salah. Akses ditolak!</p>
+  </div>
+
+  <!-- KONTEN UTAMA (Tersembunyi Sebelum Login) -->
+  <div id="mainApp" class="hidden">
+    <nav class="bg-white border-b-2 border-tanjiro sticky top-0 z-50 shadow-sm">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full bg-tanjiro flex items-center justify-center text-white font-bold">鬼</div>
+          <div>
+            <h1 class="font-bold text-tanjiro leading-tight">KIMETSU LEDGER</h1>
+            <p class="text-[10px] text-gray-500 uppercase tracking-widest">Pribadi</p>
+          </div>
+        </div>
+        <button onclick="openModal()" class="bg-hinokami hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded shadow">+ Tambah</button>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-xl border shadow-sm">
+          <p class="text-xs text-gray-500 font-bold uppercase mb-1">Dana Awal</p>
+          <p class="text-xl font-bold text-gray-800">Rp 13.000.000</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border shadow-sm">
+          <p class="text-xs text-gray-500 font-bold uppercase mb-1">Pengeluaran</p>
+          <p id="totalKeluar" class="text-xl font-bold text-hinokami">Rp 0</p>
+        </div>
+        <div class="bg-tanjiro p-4 rounded-xl shadow-md text-white">
+          <p class="text-xs text-green-200 font-bold uppercase mb-1">Sisa Saldo</p>
+          <p id="sisaSaldo" class="text-xl font-bold">Rp 0</p>
+        </div>
+      </div>
+
+      <div class="bg-red-50 border-l-4 border-hinokami p-4 rounded-r-xl">
+        <div class="flex items-start gap-3">
+          <div class="text-2xl">👁️</div>
+          <div>
+            <h3 class="font-bold text-hinokami">Audit: Uang Rp 60.000 Masih Utuh!</h3>
+            <p class="text-sm text-gray-700 mt-1">Baris ke-27 → 28 melompat ke 4735. Seharusnya 4615 + 60 = 4675. Sisa saldo riil: <strong>Rp 7.600.000</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+        <div class="p-4 border-b bg-gray-50 flex justify-between items-center">
+          <h2 class="font-bold text-tanjiro">Riwayat</h2>
+          <input type="text" id="searchInput" oninput="renderTable()" placeholder="Cari..." class="px-3 py-1.5 border rounded-lg text-sm focus:outline-none">
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-white border-b text-gray-500">
+              <tr>
+                <th class="py-3 px-4 font-semibold">No</th>
+                <th class="py-3 px-4 font-semibold">Pengeluaran</th>
+                <th class="py-3 px-4 font-semibold text-right">Nominal</th>
+                <th class="py-3 px-4 font-semibold text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tabelBody" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL TAMBAH -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-sm overflow-hidden">
+      <div class="bg-tanjiro p-4 flex justify-between items-center text-white">
+        <h3 class="font-bold">Catat Pengeluaran</h3>
+        <button onclick="closeModal()" class="text-2xl">&times;</button>
+      </div>
+      <form id="formTambah" class="p-4 space-y-4" onsubmit="tambahData(event)">
+        <div>
+          <label class="block text-xs font-bold text-gray-600 mb-1">Nama</label>
+          <input type="text" id="inputNama" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-tanjiro" placeholder="Cth: Belanja">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-600 mb-1">Nominal (Rp)</label>
+          <input type="number" id="inputNominal" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-tanjiro" placeholder="Cth: 50000">
+        </div>
+        <button type="submit" class="w-full bg-hinokami text-white font-bold py-2 rounded-lg">Simpan</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // SANDI RAHASIA (Ubah di sini jika perlu)
+    // ==========================================
+    const PASSWORD_RAHASIA = "Nisa2024"; 
+
+    function checkPassword() {
+      const input = document.getElementById('passwordInput').value;
+      if (input === PASSWORD_RAHASIA) {
+        document.getElementById('lockScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+      } else {
+        document.getElementById('errorMsg').classList.remove('hidden');
+        document.getElementById('passwordInput').value = '';
+      }
+    }
+
+    // --- DATA & LOGIC KEUANGAN ---
+    const dataAwal = [
+      { nama: "Belanja masak mamak", nominal: 100000 }, { nama: "Sedekah", nominal: 500000 },
+      { nama: "Pegangan mamak", nominal: 500000 }, { nama: "Bensin", nominal: 25000 },
+      { nama: "Bor air", nominal: 1200000 }, { nama: "Bagus", nominal: 500000 },
+      { nama: "Belanja telur / mie instan", nominal: 53000 }, { nama: "Ceret minum", nominal: 15000 },
+      { nama: "Paralon / sambungan", nominal: 131000 }, { nama: "Celana 3x / kaos 2x", nominal: 150000 },
+      { nama: "Usb voltmeter", nominal: 18000 }, { nama: "Hp anissa", nominal: 600000 },
+      { nama: "Galon 1x", nominal: 6000 }, { nama: "Bayar hutang makyah gas", nominal: 100000 },
+      { nama: "Masak janganan patin+pitek", nominal: 50000 }, { nama: "Pertalite", nominal: 20000 },
+      { nama: "Sabun+odol", nominal: 10000 }, { nama: "Jajan nisa", nominal: 14000 },
+      { nama: "Baju nisa", nominal: 52000 }, { nama: "TEGAR", nominal: 100000 },
+      { nama: "Galon", nominal: 6000 }, { nama: "Mbak ria", nominal: 100000 },
+      { nama: "Mak ini", nominal: 100000 }, { nama: "Mamak", nominal: 100000 },
+      { nama: "Pertalite, case hp oppo12", nominal: 40000 }, { nama: "Charger hp", nominal: 75000 },
+      { nama: "Sendal", nominal: 50000 }, { nama: "Bayar iuran (Audit +60rb)", nominal: 60000 },
+      { nama: "Mamak", nominal: 50000 }, { nama: "Cukur+ silet", nominal: 25000 },
+      { nama: "Blonjo", nominal: 75000 }, { nama: "Mamak", nominal: 15000 },
+      { nama: "Minyak+obat", nominal: 80000 }, { nama: "Sprite +galon+endok", nominal: 30000 },
+      { nama: "Mamak", nominal: 100000 }, { nama: "Minyak+jajan", nominal: 25000 },
+      { nama: "Blonjo alat motor", nominal: 125000 }, { nama: "Mamak blonjo", nominal: 100000 },
+      { nama: "Brobat nisa", nominal: 100000 }
+    ];
+
+    let dataPengeluaran = JSON.parse(localStorage.getItem('kimetsu_data')) || dataAwal;
+    const DANA_AWAL = 13000000;
+    const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+
+    function renderTable() {
+      const tbody = document.getElementById('tabelBody');
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      tbody.innerHTML = '';
+      const filteredData = dataPengeluaran.filter(item => item.nama.toLowerCase().includes(search));
+
+      filteredData.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-gray-50";
+        tr.innerHTML = `
+          <td class="py-3 px-4 text-gray-500">${index + 1}</td>
+          <td class="py-3 px-4 font-medium">${item.nama}</td>
+          <td class="py-3 px-4 text-right font-bold">${formatRp(item.nominal)}</td>
+          <td class="py-3 px-4 text-center"><button onclick="hapusData(${dataPengeluaran.indexOf(item)})" class="text-red-500 font-bold text-xs bg-red-50 py-1 px-2 rounded">Hapus</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const totalKeluar = dataPengeluaran.reduce((sum, i) => sum + i.nominal, 0);
+      document.getElementById('totalKeluar').innerText = formatRp(totalKeluar);
+      document.getElementById('sisaSaldo').innerText = formatRp(DANA_AWAL - totalKeluar);
+    }
+
+    function tambahData(e) {
+      e.preventDefault();
+      const nama = document.getElementById('inputNama').value;
+      const nominal = parseInt(document.getElementById('inputNominal').value);
+      if(nama && nominal) {
+        dataPengeluaran.unshift({ nama, nominal });
+        localStorage.setItem('kimetsu_data', JSON.stringify(dataPengeluaran));
+        closeModal(); renderTable(); document.getElementById('formTambah').reset();
+      }
+    }
+
+    function hapusData(index) {
+      if(confirm('Hapus data ini?')) {
+        dataPengeluaran.splice(index, 1);
+        localStorage.setItem('kimetsu_data', JSON.stringify(dataPengeluaran));
+        renderTable();
+      }
+    }
+
+    function openModal() { document.getElementById('modal').classList.remove('hidden'); document.getElementById('modal').classList.add('flex'); }
+    function closeModal() { document.getElementById('modal').classList.add('hidden'); document.getElementById('modal').classList.remove('flex'); }
+    window.onload = renderTable;
+  </script>
+</body>
+</html>
