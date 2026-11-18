@@ -92,7 +92,20 @@
 </head>
 <body class="antialiased pb-12">
 
-  <div id="mainApp">
+  <!-- LAYAR KUNCI (PASSWORD) -->
+  <div id="lockScreen" class="fixed inset-0 bg-vice-dark z-[9999] flex flex-col items-center justify-center p-4 flex-shrink-0">
+    <div class="w-[100px] h-[100px] rounded-xl bg-gradient-to-br from-neon-pink to-neon-orange flex items-center justify-center text-white text-5xl shadow-[0_0_30px_#ff007f] mb-6">
+      <i class="fa-solid fa-lock"></i>
+    </div>
+    <h2 class="gta-logo text-3xl sm:text-4xl uppercase tracking-wider mb-2">SONYBAE</h2>
+    <p class="text-neon-cyan font-mono tracking-widest text-sm mb-8">SECURE ACCESS</p>
+    <input type="password" id="passwordInput" placeholder="Masukkan Sandi" class="w-full max-w-xs px-5 py-4 bg-black/50 border border-neon-pink/50 rounded-lg text-center text-lg text-white font-mono tracking-wider focus:outline-none focus:border-neon-cyan focus:shadow-[0_0_15px_rgba(0,240,255,0.3)]" onkeypress="if(event.key==='Enter') checkPassword()">
+    <button onclick="checkPassword()" class="mt-5 w-full max-w-xs bg-gradient-to-r from-neon-pink to-neon-orange text-white font-black py-3.5 px-8 rounded-lg shadow-[0_0_20px_rgba(255,0,127,0.5)] uppercase tracking-widest font-mono transition-all hover:scale-105">AKSES SISTEM</button>
+    <p id="errorMsg" class="text-neon-pink mt-4 hidden text-sm font-mono animate-pulse">ACCESS DENIED. KODE SALAH.</p>
+  </div>
+
+  <!-- KONTEN UTAMA (Tersembunyi Sebelum Login) -->
+  <div id="mainApp" class="hidden">
     <!-- NAVBAR -->
     <nav class="vice-glass sticky top-0 z-50 border-b border-neon-pink/50 shadow-[0_4px_30px_rgba(255,0,127,0.2)]">
       <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -229,6 +242,28 @@
   </div>
 
   <script>
+    // ==========================================
+    // SANDI RAHASIA
+    // ==========================================
+    const PASSWORD_RAHASIA = "sonybae32";
+
+    function checkPassword() {
+      const input = document.getElementById('passwordInput').value;
+      if (input === PASSWORD_RAHASIA) {
+        document.getElementById('lockScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+      } else {
+        document.getElementById('errorMsg').classList.remove('hidden');
+        document.getElementById('passwordInput').value = '';
+        // Efek getar
+        const lockScreen = document.getElementById('lockScreen');
+        lockScreen.style.animation = 'none';
+        lockScreen.offsetHeight;
+        lockScreen.style.animation = 'shake 0.4s ease';
+      }
+    }
+
+    // --- DATA & LOGIC KEUANGAN ---
     const dataAwal = [
       { nama: "Belanja masak mamak", nominal: 100000 }, { nama: "Sedekah", nominal: 500000 },
       { nama: "Pegangan mamak", nominal: 500000 }, { nama: "Bensin", nominal: 25000 },
@@ -354,5 +389,13 @@
     
     window.onload = renderTable;
   </script>
+
+  <style>
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+  </style>
 </body>
 </html>
